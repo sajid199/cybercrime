@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>National Cyber Crime Reporting Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 10px 0;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .gov-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #1e3c72;
+        }
+
+        .portal-title {
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .portal-title h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .portal-title h2 {
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .azadi-logo {
+            width: 100px;
+            height: 60px;
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            text-align: center;
+            color: white;
+        }
+
+        .language-selector {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Navigation */
+        .nav {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-item {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item.active {
+            background: #ffa500;
+        }
+
+        .home-icon {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 3px;
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .breadcrumb {
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .breadcrumb a {
+            color: #2a5298;
+            text-decoration: none;
+        }
+
+        /* Tracking Form */
+        .tracking-container {
+            background: white;
+            border-radius: 15px;
+            border: 2px solid #2a5298;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .tracking-title {
+            font-size: 24px;
+            color: #1e3c72;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2a5298;
+        }
+
+        .submit-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        .submit-btn:hover {
+            background: #219a52;
+        }
+
+        /* Status Display */
+        .status-container {
+            background: #f8f9fa;
+            border: 2px solid #2a5298;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .status-container.show {
+            display: block;
+            opacity: 1;
+        }
+
+        .status-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+            border-left: 5px solid #27ae60;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-item.error {
+            border-left-color: #e74c3c;
+        }
+
+        .status-icon {
+            width: 24px;
+            height: 24px;
+            background: #27ae60;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+        }
+
+        .status-item.error .status-icon {
+            background: #e74c3c;
+        }
+
+        .status-text {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .status-timestamp {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Useful Links */
+        .useful-links {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .useful-links h3 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .link-icon {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(45deg, #ffa500, #ff6b35);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .link-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s;
+            cursor: pointer;
+            border: 1px solid #ddd;
+        }
+
+        .link-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .link-item div {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        /* Footer */
+        .footer {
+            background: #333;
+            color: white;
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #ffa500;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: #555;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .social-links a:hover {
+            background: #ffa500;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-top {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .nav-menu {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .tracking-container {
+                padding: 20px;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <div class="gov-info">
+                <div class="logo">🇮🇳</div>
+                <div>
+                    <div>भारत सरकार</div>
+                    <div>GOVERNMENT OF INDIA</div>
+                </div>
+                <div>
+                    <div>गृह मंत्रालय</div>
+                    <div>MINISTRY OF HOME AFFAIRS</div>
+                </div>
+            </div>
+            
+            <div class="portal-title">
+                <h1>राष्ट्रीय साइबर अपराध रिपोर्टिंग पोर्टल</h1>
+                <h2>National Cyber Crime Reporting Portal</h2>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="azadi-logo">
+                    75<br>आजादी का<br>अमृत महोत्सव
+                </div>
+                <select class="language-selector">
+                    <option>Language</option>
+                    <option>English</option>
+                    <option>हिंदी</option>
+                </select>
+            </div>
+        </div>
+        
+        <nav class="nav">
+            <div class="nav-container">
+                <div class="nav-menu">
+                    <a href="#" class="nav-item"><span class="home-icon"></span></a>
+                    <a href="#" class="nav-item">Register a Complaint +</a>
+                    <a href="#" class="nav-item active">Track your Complaint</a>
+                    <a href="#" class="nav-item">Report & Check Suspect +</a>
+                    <a href="#" class="nav-item">Cyber Volunteers +</a>
+                    <a href="#" class="nav-item">Learning Corner +</a>
+                    <a href="#" class="nav-item">Contact Us</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="breadcrumb">
+            <a href="#">Home</a> › Track your Complaint
+        </div>
+
+        <!-- Tracking Form -->
+        <div class="tracking-container">
+            <h2 class="tracking-title">Track your Complaint Status</h2>
+            
+            <form id="trackingForm">
+                <div class="form-group">
+                    <label for="acknowledgementNo">Acknowledgement No. <span class="required">*</span></label>
+                    <input type="text" id="acknowledgementNo" name="acknowledgementNo" placeholder="Enter Acknowledgement No. here" required>
+                </div>
+                
+                <button type="submit" class="submit-btn">Submit</button>
+                
+                <div class="status-container" id="statusContainer">
+                    <div class="status-item" id="status1">
+                        <span class="status-icon">✓</span>
+                        <div>
+                            <div class="status-text"></div>
+                            <div class="status-timestamp"></div>
+                        </div>
+                    </div>
+                    <div class="status-item" id="status2">
+                        <span class="status-icon">✓</span>
+                        <div>
+                            <div class="status-text"></div>
+                            <div class="status-timestamp"></div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Useful Links -->
+        <div class="useful-links">
+            <h3><span class="link-icon"></span>Useful Links</h3>
+            <div class="links-grid">
+                <div class="link-item">
+                    <div>🏛️</div>
+                    <div>NCPCA</div>
+                </div>
+                <div class="link-item">
+                    <div>🔐</div>
+                    <div>CERT-In</div>
+                </div>
+                <div class="link-item">
+                    <div>🇮🇳</div>
+                    <div>India.gov.in</div>
+                </div>
+                <div class="link-item">
+                    <div>👮</div>
+                    <div>Cyber Crime</div>
+                </div>
+                <div class="link-item">
+                    <div>🎓</div>
+                    <div>CyTrain</div>
+                </div>
+                <div class="link-item">
+                    <div>🛡️</div>
+                    <div>Information Security</div>
+                </div>
+                <div class="link-item">
+                    <div>📚</div>
+                    <div>Digital India</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="#">Feedback</a>
+            <a href="#">FAQ</a>
+            <a href="#">Contact Us</a>
+            <a href="#">Website Policies</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Disclaimer</a>
+        </div>
+        
+        <div class="social-links">
+            <a href="#" title="Twitter">𝕏</a>
+            <a href="#" title="Facebook">f</a>
+            <a href="#" title="YouTube">▶</a>
+            <a href="#" title="Instagram">📷</a>
+            <a href="#" title="Telegram">✈</a>
+            <a href="#" title="LinkedIn">in</a>
+            <a href="#" title="Koo">🐦</a>
+        </div>
+        
+        <p>Website Content Managed by Ministry of Home Affairs, Govt. of India. Best viewed in Mozilla Firefox, Google Chrome.</p>
+    </footer>
+
+    <script>
+        // Get current timestamp
+        function getCurrentTimestamp() {
+            const now = new Date();
+            return now.toLocaleString('en-IN', {
+                dateStyle: 'medium',
+                timeStyle: 'short'
+            });
+        }
+
+        // Form submission handler
+        document.getElementById('trackingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const acknowledgementNo = document.getElementById('acknowledgementNo').value.trim();
+            const statusContainer = document.getElementById('statusContainer');
+            const status1 = document.getElementById('status1');
+            const status2 = document.getElementById('status2');
+            
+            // Reset status container
+            statusContainer.classList.remove('show');
+            status1.classList.remove('error');
+            status2.classList.remove('error');
+            status1.querySelector('.status-text').textContent = '';
+            status2.querySelector('.status-text').textContent = '';
+            status1.querySelector('.status-timestamp').textContent = '';
+            status2.querySelector('.status-timestamp').textContent = '';
+            
+            // Validate acknowledgement number
+            if (!acknowledgementNo) {
+                status1.classList.add('error');
+                status1.querySelector('.status-text').textContent = 'Please enter acknowledgement number.';
+                status1.querySelector('.status-timestamp').textContent = getCurrentTimestamp();
+                statusContainer.classList.add('show');
+                return;
+            }
+            
+            // Check for specific acknowledgement number
+            if (acknowledgementNo === '550-3306487') {
+                // First status message
+                status1.querySelector('.status-text').textContent = 'Matter has been assigned to investigation team';
+                status1.querySelector('.status-timestamp').textContent = getCurrentTimestamp();
+                
+                // Second status message after a short delay
+                setTimeout(() => {
+                    status2.querySelector('.status-text').textContent = 'Receiver bank details and account details found. Our police team will reach out to the receiver bank account person.';
+                    status2.querySelector('.status-timestamp').textContent = getCurrentTimestamp();
+                    statusContainer.classList.add('show');
+                }, 1000);
+            } else {
+                status1.classList.add('error');
+                status1.querySelector('.status-text').textContent = 'Invalid Acknowledgement Number. Please try again.';
+                status1.querySelector('.status-timestamp').textContent = getCurrentTimestamp();
+                statusContainer.classList.add('show');
+            }
+            
+            // Clear form
+            document.getElementById('trackingForm').reset();
+        });
+
+        // Add hover effects for navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Add click effects for useful links
+        document.querySelectorAll('.link-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const linkText = this.textContent.trim();
+                alert('Redirecting to ' + linkText + ' portal...');
+            });
+        });
+    </script>
+</body>
+</html>
